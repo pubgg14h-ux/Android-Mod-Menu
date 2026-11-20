@@ -60,7 +60,6 @@ void* ESPThread(void*) {
     return nullptr;
 }
 
-// Заглушки для JNI функций, которые ищет Setup.cpp
 extern "C" JNIEXPORT void JNICALL Java_uk_lgl_modmenu_Preferences_Changes(JNIEnv* env, jclass clazz, jobjectArray obj, jint i, jstring str, jint i2, jlong j, jbyte b, jstring str2) {}
 extern "C" JNIEXPORT void JNICALL Java_uk_lgl_modmenu_Preferences_RegisterPreferences(JNIEnv* env, jclass clazz) {}
 
