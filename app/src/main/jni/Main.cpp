@@ -1,16 +1,10 @@
-#include <list>
-#include <vector>
-#include <cstring>
-#include <pthread.h>
-#include <thread>
-#include <string>
 #include <jni.h>
-#include "Menu/Menu.hpp"
-#include "Menu/Jni.hpp"
-#include <unistd.h>
-#include <fstream>
-#include <iostream>
+#include <string>
+#include <vector>
+#include <cmath>
 #include <dlfcn.h>
+#include <pthread.h>
+#include <unistd.h>
 #include <android/log.h>
 #include "Includes/Logger.h"
 #include "Includes/obfuscate.h"
@@ -27,7 +21,7 @@ void* (*il2cpp_class_from_name)(void* image, const char* namespaze, const char* 
 void* (*il2cpp_class_get_method_from_name)(void* klass, const char* name, int argsCount);
 void* (*il2cpp_runtime_invoke)(void* method, void* obj, void** params, void** exc);
 
-bool esp_enabled = true; 
+bool esp_enabled = true;
 
 void* ESPThread(void*) {
     void* handle = nullptr;
@@ -61,17 +55,12 @@ void* ESPThread(void*) {
     }
     return nullptr;
 }
+
+// Заглушки, которые требует шаблон (чтобы не было ошибок линковщика)
 void Changes(JNIEnv* env, jclass clazz, jobject obj, jint i, jstring str, jint i2, jlong j, jbyte b, jstring str2) {}
+void RegisterPreferences(JNIEnv* env) {}
 
-extern "C" jint JNI_OnLoad(JavaVM *vm, void *reserved) {
-    JNIEnv *env;
-    if (vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK) {
-        return -1;
-    }
-    RegisterMenu(env);
-    return JNI_VERSION_1_6;
-}
-
+// Точка входа
 __attribute__((constructor))
 void lib_main() {
     pthread_t esp_thread;
