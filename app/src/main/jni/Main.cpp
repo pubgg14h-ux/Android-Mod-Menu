@@ -5,6 +5,8 @@
 #include <thread>
 #include <string>
 #include <jni.h>
+#include "Menu/Menu.hpp"
+#include "Menu/Jni.hpp"
 #include <unistd.h>
 #include <fstream>
 #include <iostream>
@@ -59,8 +61,16 @@ void* ESPThread(void*) {
     }
     return nullptr;
 }
+void Changes(JNIEnv* env, jclass clazz, jobject obj, jint i, jstring str, jint i2, jlong j, jbyte b, jstring str2) {}
 
-void Changes(JNIEnv* env, jclass clazz, jobjectArray obj, jint i, jstring str, jint i2, jlong j, jbyte b, jstring str2) {}
+extern "C" jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+    JNIEnv *env;
+    if (vm->GetEnv(reinterpret_cast<void **>(&env), JNI_VERSION_1_6) != JNI_OK) {
+        return -1;
+    }
+    RegisterMenu(env);
+    return JNI_VERSION_1_6;
+}
 
 __attribute__((constructor))
 void lib_main() {
