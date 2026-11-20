@@ -16,8 +16,6 @@
 #include "Menu/Menu.hpp"
 #include "Menu/Jni.hpp"
 #include "Includes/Macros.h"
-#include "imgui.h"
-#include "imgui_internal.h"
 
 // Функции IL2CPP
 void* (*il2cpp_domain_get)();
@@ -27,35 +25,7 @@ void* (*il2cpp_class_from_name)(void* image, const char* namespaze, const char* 
 void* (*il2cpp_class_get_method_from_name)(void* klass, const char* name, int argsCount);
 void* (*il2cpp_runtime_invoke)(void* method, void* obj, void** params, void** exc);
 
-bool esp_enabled = false;
-
-void* CallMethod(void* obj, const char* methodName, int args = 0, void** params = nullptr) {
-    if (!obj) return nullptr;
-    void* klass = *(void**)obj;
-    void* method = il2cpp_class_get_method_from_name(klass, methodName, args);
-    if (method) return il2cpp_runtime_invoke(method, obj, params, nullptr);
-    return nullptr;
-}
-
-struct Vector3 { float x, y, z; };
-
-Vector3 GetPosition(void* transform) {
-    Vector3 pos = {0, 0, 0};
-    void* result = CallMethod(transform, "get_position", 0);
-    if (result) pos = *(Vector3*)result;
-    return pos;
-}
-
-bool WorldToScreen(Vector3 pos, Vector3* screen, float* matrix, int width, int height) {
-    float w = matrix[3] * pos.x + matrix[7] * pos.y + matrix[11] * pos.z + matrix[15];
-    if (w < 0.01f) return false;
-    float invW = 1.0f / w;
-    float x = (matrix[0] * pos.x + matrix[4] * pos.y + matrix[8] * pos.z + matrix[12]) * invW;
-    float y = (matrix[1] * pos.x + matrix[5] * pos.y + matrix[9] * pos.z + matrix[13]) * invW;
-    screen->x = (width / 2.0f) * (x + 1.0f);
-    screen->y = (height / 2.0f) * (1.0f - y);
-    return true;
-}
+bool esp_enabled = true; 
 
 void* ESPThread(void*) {
     void* handle = nullptr;
@@ -82,18 +52,12 @@ void* ESPThread(void*) {
             if (!playerClass) playerClass = il2cpp_class_from_name(image, "", "Player");
 
             if (playerClass) {
-                __android_log_print(ANDROID_LOG_INFO, "KUST_MOD", "BasePlayer class found!");
+                __android_log_print(ANDROID_LOG_INFO, "KUST_MOD", "BasePlayer found!");
             }
         }
         usleep(10000);
     }
     return nullptr;
-}
-
-void DrawMenu() {
-    ImGui::Begin("KUST MOD MENU", nullptr, ImGuiWindowFlags_NoCollapse);
-    ImGui::Checkbox("ESP Enabled", &esp_enabled);
-    ImGui::End();
 }
 
 __attribute__((constructor))
