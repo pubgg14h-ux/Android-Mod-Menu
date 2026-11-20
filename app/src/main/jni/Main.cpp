@@ -60,10 +60,8 @@ void* ESPThread(void*) {
     return nullptr;
 }
 
-extern "C" {
-    void Changes(JNIEnv* env, jclass clazz, jobjectArray obj, jint i, jstring str, jint i2, jlong j, jbyte b, jstring str2) {}
-    void RegisterPreferences(JNIEnv* env, jclass clazz) {}
-}
+void Changes(JNIEnv* env, jclass clazz, jobjectArray obj, jint i, jstring str, jint i2, jlong j, jbyte b, jstring str2) {}
+void RegisterPreferences(JNIEnv* env) {}
 
 __attribute__((constructor))
 void lib_main() {
