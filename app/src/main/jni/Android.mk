@@ -37,7 +37,6 @@ LOCAL_SRC_FILES := Main.cpp \
     Menu/Jni.cpp \
     Menu/Menu.cpp \
     Menu/Setup.cpp \
-    Menu/Preferences.cpp \
     Includes/Utils.cpp \
 	KittyMemory/KittyAsm.cpp \
 	KittyMemory/KittyIOFile.cpp \
