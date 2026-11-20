@@ -60,8 +60,10 @@ void* ESPThread(void*) {
     return nullptr;
 }
 
-extern "C" JNIEXPORT void JNICALL Java_uk_lgl_modmenu_Preferences_Changes(JNIEnv* env, jclass clazz, jobjectArray obj, jint i, jstring str, jint i2, jlong j, jbyte b, jstring str2) {}
-extern "C" JNIEXPORT void JNICALL Java_uk_lgl_modmenu_Preferences_RegisterPreferences(JNIEnv* env, jclass clazz) {}
+extern "C" {
+    void Changes(JNIEnv* env, jclass clazz, jobjectArray obj, jint i, jstring str, jint i2, jlong j, jbyte b, jstring str2) {}
+    void RegisterPreferences(JNIEnv* env, jclass clazz) {}
+}
 
 __attribute__((constructor))
 void lib_main() {
